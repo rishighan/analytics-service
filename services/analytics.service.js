@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-	name: "greeter",
+	name: "analytics",
 
 	/**
 	 * Service settings
@@ -34,7 +34,7 @@ module.exports = {
 		 *
 		 * @param {String} name - User name
 		 */
-		welcome: {
+		fetch: {
 			params: {
 				name: "string"
 			},

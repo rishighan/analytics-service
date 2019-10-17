@@ -1,5 +1,4 @@
 "use strict";
-
 const ApiGateway = require("moleculer-web");
 
 module.exports = {
@@ -18,6 +17,18 @@ module.exports = {
 			]
 		}],
 
+		aliases: {
+			"GET /analytics/fetch": "analytics.hello"
+		},
+		// Parse body content
+		bodyParsers: {
+			json: {
+				strict: false
+			},
+			urlencoded: {
+				extended: false
+			}
+		},
 		// Serve assets from "public" folder
 		assets: {
 			folder: "public"
