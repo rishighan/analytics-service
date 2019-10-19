@@ -7,7 +7,7 @@ module.exports = {
 
 	// More info about settings: https://moleculer.services/docs/0.13/moleculer-web.html
 	settings: {
-		port: process.env.PORT || 3000,
+		port: process.env.PORT || 5000,
 
 		routes: [{
 			path: "/api",
@@ -18,7 +18,7 @@ module.exports = {
 		}],
 
 		aliases: {
-			"GET /analytics/fetch": "analytics.hello"
+			"GET /analytics/fetch": "analytics.fetch"
 		},
 		// Parse body content
 		bodyParsers: {

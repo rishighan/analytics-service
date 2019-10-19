@@ -1,4 +1,5 @@
 "use strict";
+const { analyticsQuery } = require("../utils/googleapi");
 
 module.exports = {
 	name: "analytics",
@@ -13,7 +14,7 @@ module.exports = {
 	/**
 	 * Service dependencies
 	 */
-	dependencies: [],	
+	dependencies: [],
 
 	/**
 	 * Actions
@@ -36,12 +37,13 @@ module.exports = {
 		 */
 		fetch: {
 			params: {
-				name: "string"
+				query: { type: "string", optional: false },
 			},
-			handler(ctx) {
-				return `Welcome, ${ctx.params.name}`;
-			}
-		}
+			async handler(ctx) {
+				const data = await analyticsQuery(ctx.params.query);
+				return data;
+			},
+		},
 	},
 
 	/**
