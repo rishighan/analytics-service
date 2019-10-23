@@ -41,7 +41,7 @@ module.exports = {
 			},
 			async handler(ctx) {
 				const data = await analyticsQuery(ctx.params.query);
-				return data;
+				return data.data;
 			},
 		},
 	},

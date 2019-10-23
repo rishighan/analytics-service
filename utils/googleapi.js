@@ -3,9 +3,11 @@ const _ = require("lodash");
 const dotenv = require("dotenv");
 const gAPICredentials = dotenv.config();
 
+const privateKey = _.replace(gAPICredentials.parsed.PRIVATE_KEY, /\\n/g, '\n');
+
 const jwtClient = new google.auth.JWT(gAPICredentials.parsed.CLIENT_EMAIL,
 	null,
-	gAPICredentials.parsed.PRIVATE_KEY,
+	privateKey,
 	"https://www.googleapis.com/auth/analytics.readonly");
 
 const analyticsQuery = async (queryString)  => {
