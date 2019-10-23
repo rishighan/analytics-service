@@ -4,37 +4,13 @@ const { analyticsQuery } = require("../utils/googleapi");
 module.exports = {
 	name: "analytics",
 
-	/**
-	 * Service settings
-	 */
+	
 	settings: {
 
 	},
-
-	/**
-	 * Service dependencies
-	 */
+	
 	dependencies: [],
-
-	/**
-	 * Actions
-	 */
 	actions: {
-
-		/**
-		 * Say a 'Hello'
-		 *
-		 * @returns
-		 */
-		hello() {
-			return "Hello Moleculer";
-		},
-
-		/**
-		 * Welcome a username
-		 *
-		 * @param {String} name - User name
-		 */
 		fetch: {
 			params: {
 				query: { type: "string", optional: false },
