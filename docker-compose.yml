@@ -7,7 +7,9 @@ services:
       context: .
     image: analytics-service
     container_name: analytics-service-api
-    env_file: docker-compose.env
+    env_file: 
+      - docker-compose.env
+      - .env
     environment:
       SERVICES: api
       PORT: 3000
@@ -26,10 +28,10 @@ services:
     build:
       context: .
     image: analytics-service
-    container_name: analytics-service-greeter
+    container_name: analytics-service
     env_file: docker-compose.env
     environment:
-      SERVICES: greeter
+      SERVICES: analytics
     labels:
       - "traefik.enable=false"
     depends_on:
@@ -45,7 +47,7 @@ services:
       - internal
 
   traefik:
-    image: traefik:1.7
+    image: traefik:latest
     container_name: traefik
     command:
       - "--api"
@@ -54,10 +56,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
-      - "traefik.port=8080"
+      - "traefik.port=8090"
     ports:
-      - 3000:80
-      - 3001:8080
+      - 3002:80
+      - 3003:8090
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
