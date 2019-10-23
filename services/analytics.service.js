@@ -3,12 +3,9 @@ const { analyticsQuery } = require("../utils/googleapi");
 
 module.exports = {
 	name: "analytics",
-
-	
 	settings: {
 
 	},
-	
 	dependencies: [],
 	actions: {
 		fetch: {
