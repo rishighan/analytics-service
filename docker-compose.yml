@@ -22,11 +22,11 @@ services:
     networks:
       - internal
 
-  analytics-starter:
+  greeter:
     build:
       context: .
     image: analytics-service
-    container_name: analytics-service
+    container_name: analytics-service-greeter
     env_file: docker-compose.env
     environment:
       SERVICES: analytics
@@ -45,7 +45,7 @@ services:
       - internal
 
   traefik:
-    image: traefik:latest
+    image: traefik:1.7
     container_name: traefik
     command:
       - "--api"
