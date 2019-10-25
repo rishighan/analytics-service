@@ -5,7 +5,7 @@ services:
   api:
     build:
       context: .
-    image: analytics-service
+    image: frishi/analytics-service-api
     container_name: analytics-service-api
     env_file: docker-compose.env
     environment:
@@ -25,7 +25,7 @@ services:
   greeter:
     build:
       context: .
-    image: analytics-service
+    image: frishi/analytics-service-greeter
     container_name: analytics-service-greeter
     env_file: docker-compose.env
     environment:
