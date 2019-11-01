@@ -7,9 +7,4 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: |
-            npm i
-      - run:
-          name: Run tests
-          command: |
-            npm run test
+          command: npm i
