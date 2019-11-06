@@ -34,6 +34,7 @@ services:
       - "traefik.enable=false"
     depends_on:
       - nats
+      - redis
     networks:
       - internal
 
@@ -41,6 +42,11 @@ services:
     image: nats
     labels:
       - "traefik.enable=false"
+    networks:
+      - internal
+  
+  redis:
+    image: redis
     networks:
       - internal
 
