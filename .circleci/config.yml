@@ -25,3 +25,12 @@ jobs:
           name: Build using docker-compose
           command: |
             docker-compose build
+      - run:
+          name: Login for Docker hub
+          command: | 
+            echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
+      - run:
+          name: Push to Docker Hub
+          command: |
+            docker-compose push
+      
