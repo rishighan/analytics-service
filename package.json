@@ -18,13 +18,14 @@
   ],
   "author": "",
   "devDependencies": {
+    "connect-redis": "^4.0.3",
     "eslint": "^6.1.0",
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",
-    "moleculer-repl": "^0.6.1"
+    "moleculer-repl": "^0.6.1",
+    "redis": "^2.8.0"
   },
   "dependencies": {
-    "dotenv": "^8.2.0",
     "googleapis": "^44.0.0",
     "lodash": "^4.17.15",
     "moleculer": "^0.13.9",
