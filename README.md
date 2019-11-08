@@ -1,6 +1,12 @@
 [![Moleculer](https://badgen.net/badge/Powered%20by/Moleculer/0e83cd)](https://moleculer.services)
 
+## Build status
+[![CircleCI](https://circleci.com/gh/rishighan/analytics-service.svg?style=svg)](https://circleci.com/gh/rishighan/analytics-service)
+
 # analytics-service
+
+A microservice that connects with Google Analytics API and fetches data for posts on rishighan.com
+
 
 ## NPM scripts
 
