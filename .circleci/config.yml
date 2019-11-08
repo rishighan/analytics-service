@@ -5,6 +5,7 @@ jobs:
       - image: "circleci/node:10.16.0"
     steps:
       - checkout
+      - run: ssh-keyscan $DIGITALOCEAN_HOST >> ~/.ssh/known_hosts
       - run:
           name: Update to latest npm version
           command: "sudo npm install -g npm@latest"
@@ -13,8 +14,9 @@ jobs:
       - run:
           name: Install dependencies
           command: npm install
+      - install-docker-compose 
       - run:
-          name: Install Docker Compose
+          name: Install `docker-compose`
           command: |
             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
@@ -22,15 +24,22 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: false 
       - run:
-          name: Build using docker-compose
+          name: Build using `docker-compose`
           command: |
             docker-compose build
+      - push-latest-docker-image
       - run:
-          name: Login for Docker hub
+          name: Login for Docker Hub
           command: | 
             echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
       - run:
           name: Push to Docker Hub
           command: |
             docker-compose push
+      - ssh-to-remote
+      - run:
+          name: SSH to Digital Ocean Droplet
+          command: |
+
+
       
