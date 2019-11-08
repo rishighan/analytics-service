@@ -40,6 +40,6 @@ jobs:
       - run:
           name: Remove currently running containers 
           command: |
-            ssh root@$DIGITALOCEAN_HOST docker-compose rm -f
+            ssh root@$DIGITALOCEAN_HOST docker ps 
 
       
