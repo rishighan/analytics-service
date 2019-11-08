@@ -5,7 +5,6 @@ jobs:
       - image: "circleci/node:10.16.0"
     steps:
       - checkout
-      - run: ssh-keyscan $DIGITALOCEAN_HOST >> ~/.ssh/known_hosts
       - run:
           name: Update to latest npm version
           command: "sudo npm install -g npm@latest"
@@ -34,9 +33,10 @@ jobs:
           name: Push to Docker Hub
           command: |
             docker-compose push
+      - run: ssh-keyscan $DIGITALOCEAN_HOST >> ~/.ssh/known_hosts
       - run:
-          name: SSH to Digital Ocean Droplet
+          name: Remove currently running containers 
           command: |
-            ssh root@$DIGITALOCEAN_HOST docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
+            ssh root@$DIGITALOCEAN_HOST docker-compose rm -f
 
       
