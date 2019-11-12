@@ -23,7 +23,14 @@ else
 fi
     echo "Changing directory to $directory_name"
     cd "$directory_name"
-    
+
+    echo "Docker environment reset:"
+    echo "Housekeeping..."
+    docker system prune -f
+
+    echo "Stopping and removing containers and volumes..."
+    docker-compose down -v
+
     echo "Downloading the docker-compose configuration for Analytics Service..."
     curl https://raw.githubusercontent.com/rishighan/analytics-service/master/Dockerfile --output Dockerfile
     curl https://raw.githubusercontent.com/rishighan/analytics-service/master/docker-compose.yml --output docker-compose.yml
@@ -33,4 +40,4 @@ fi
     docker-compose pull
 
     echo "Starting images..."
-    docker-compose up
+    docker-compose start 
