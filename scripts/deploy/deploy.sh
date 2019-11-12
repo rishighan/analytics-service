@@ -45,4 +45,4 @@ fi
     docker-compose pull
 
     echo "Starting images..."
-    docker-compose start 
+    docker-compose up 
