@@ -38,9 +38,8 @@ jobs:
           fingerprints:
             - 6f:6b:d9:0d:c2:a3:2c:d7:be:b7:f0:27:18:fd:17:bf
       - run:
-          name: Remove currently running containers 
+          name: Deploy to Digital Ocean Droplet
           command: |
             # example
-            ssh root@$DIGITALOCEAN_HOST docker ps 
-
+            ssh root@$DIGITALOCEAN_HOST ./scripts/deploy/deploy.sh analytics_service_config analytics-service
       
