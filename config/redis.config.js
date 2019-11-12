@@ -1,13 +1,11 @@
 // redis connection config
 let redis = require("redis");
-const REDIS_PORT = process.env.REDIS_PORT ? process.env.REDIS_PORT : "6379";
-const REDIS_HOST = process.env.REDIS_HOST ? process.env.REDIS_HOST : "localhost";
-let client = redis.createClient(REDIS_PORT, REDIS_HOST);
+let client = redis.createClient(process.env.REDIS_URL);
 
 module.exports = {
 	connect: function () {
 		client.on("connect", () => {
-			console.log("Redis server found on", REDIS_HOST);
+			console.log("Redis URL:", process.env.REDIS_URL);
 		});
 	},
 	client: client

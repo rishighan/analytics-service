@@ -1,23 +1,28 @@
 #!/bin/bash
-# My first script
+# Rishi Ghan
+# Deployment script for analytics-service
 
-echo "Attempting to create analytics-service folder"
-echo "---"
+# usage: ./deploy.sh [config_directory] [service-name]
 
-if [ ! -d "analytics_service_compose_config" ]
+echo "Attempting to create configuration folder..."
+
+directory_name=$1
+service_name=$2
+
+if [ ! -d "$directory_name" ]
 then
     echo "Directory doesn't exist. Creating now..."
-    mkdir analytics_service_compose_config
-    echo "as_deploy created."
+    mkdir "$directory_name"
+    echo "$directory_name created."
 else
-    echo "analytics_service_compose_config already exists. Removing and recreating..."
-    rm -Rf analytics_service_compose_config
-    mkdir analytics_service_compose_config
-    echo "Directory created."
+    echo "$directory_name already exists. Removing and recreating..."
+    rm -Rf "$directory_name"
+    mkdir "$directory_name"
+    echo "Done."
     
 fi
-    cd analytics_service_compose_config
-    echo "Changed directory to analytics_service_compose_config"
+    echo "Changing directory to $directory_name"
+    cd "$directory_name"
     
     echo "Downloading the docker-compose configuration for Analytics Service..."
     curl https://raw.githubusercontent.com/rishighan/analytics-service/master/Dockerfile --output Dockerfile

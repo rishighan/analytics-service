@@ -40,12 +40,14 @@ services:
 
   nats:
     image: nats
+    container_name: nats
     labels:
       - "traefik.enable=false"
     networks:
       - internal
 
   redis:
+    container_name: cache
     image: redis
     networks:
       - internal
