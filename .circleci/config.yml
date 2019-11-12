@@ -41,5 +41,5 @@ jobs:
           name: Deploy to Digital Ocean Droplet
           command: |
             # example
-            ssh root@$DIGITALOCEAN_HOST ./scripts/deploy/deploy.sh analytics_service_config analytics-service
+            bash ./scripts/deploy/deploy.sh analytics_service_config analytics-service
       

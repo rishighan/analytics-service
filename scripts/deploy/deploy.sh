@@ -4,6 +4,11 @@
 
 # usage: ./deploy.sh [config_directory] [service-name]
 
+cat >> ~/.ssh/config  << EOF
+VerifyHostKeyDNS yes
+StrictHostKeyChecking no
+EOF
+
 echo "Attempting to create configuration folder..."
 
 directory_name=$1
