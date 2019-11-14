@@ -2,8 +2,8 @@ FROM node:current-alpine
 
 ENV NODE_ENV=production
 
-RUN mkdir /app
-WORKDIR /app
+RUN mkdir /analytics-service
+WORKDIR /analytics-service
 
 COPY package.json package-lock.json ./
 RUN npm install --production 
