@@ -1,48 +1,79 @@
 #!/bin/bash
 # Rishi Ghan
-# Deployment script for analytics-service
+# Deployment script for a microservice
 
-# usage: ./deploy.sh [config_directory] [service-name]
+# usage: ./deploy.sh -d [configuration directory]
+#                    -s [service name]
+#                    -h [hostname]
+#                    -u [username]
 
+# Emojis
+CLIPBOARD="📋"
+CHECKMARK="✅"
+RENAME="🏷️"
+SCISSORS="✂️"
+DOWNLOAD="📥"
+BROOM="🧹"
+CONSTRUCTION="🏗️"
+START="🏁"
+
+# ssh config
 cat >> ~/.ssh/config  << EOF
 VerifyHostKeyDNS yes
 StrictHostKeyChecking no
 EOF
 
-echo "Attempting to create configuration folder..."
+# params
+directory_name=''
+service_name=''
+hostname=''
+username=''
 
-directory_name=$1
-service_name=$2
+while getopts 'd:s:h:u:' flag; do
+    case "${flag}" in
+        d) directory_name="${OPTARG}" ;;
+        s) service_name="${OPTARG}" ;;
+        h) hostname="${OPTARG}" ;;
+        u) username="${OPTARG}" ;;
+        *) printf "Usage..."
+           exit 1 ;;
+    esac
+done
 
+printf "$CLIPBOARD Attempting to create configuration folder...\n"
+
+ssh "$username@$hostname" /bin/bash << EOF
 if [ ! -d "$directory_name" ]
 then
-    echo "Directory doesn't exist. Creating now..."
+    printf "\n$CLIPBOARD Directory doesn't exist. Creating now...\n"
     mkdir "$directory_name"
-    echo "$directory_name created."
+    printf "$directory_name created."
 else
-    echo "$directory_name already exists. Removing and recreating..."
+    printf "\n$RENAME  $directory_name already exists. Removing and recreating...\n"
     rm -Rf "$directory_name"
     mkdir "$directory_name"
-    echo "Done."
-    
+    printf "$CHECKMARK Done.\n"
 fi
-    echo "Changing directory to $directory_name"
+    printf "\n$CLIPBOARD Changing directory to $directory_name...\n"
     cd "$directory_name"
 
-    echo "Docker environment reset:"
-    echo "Housekeeping..."
+    printf "\n$SCISSORS  Pruning Docker images, networks and volumes...\n\n"
     docker system prune -f
 
-    echo "Stopping and removing containers and volumes..."
-    docker-compose down -v
-
-    echo "Downloading the docker-compose configuration for Analytics Service..."
+    printf "$DOWNLOAD Downloading the docker-compose configuration for Analytics Service...\n\n"
     curl https://raw.githubusercontent.com/rishighan/analytics-service/master/Dockerfile --output Dockerfile
     curl https://raw.githubusercontent.com/rishighan/analytics-service/master/docker-compose.yml --output docker-compose.yml
     curl https://raw.githubusercontent.com/rishighan/analytics-service/master/docker-compose.env --output docker-compose.env
-
-    echo "Pulling the relevant Docker images..."
+    
+    printf "\n$BROOM Stopping and removing containers and volumes...\n\n"
+    docker-compose down -v
+    
+    printf "\n$DOWNLOAD Pulling the relevant Docker images...\n\n"
     docker-compose pull
 
-    echo "Starting images..."
-    docker-compose up 
+    printf "\n$CONSTRUCTION  Creating containers...\n\n"
+    docker-compose up --no-start
+
+    printf "\n$START Starting images...\n\n"
+    docker-compose start
+EOF
