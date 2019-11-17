@@ -57,12 +57,15 @@ services:
       - ../redis/data:/data
     entrypoint: redis-server --appendonly yes  
     restart: always
+
   zookeeper:
     image: 'bitnami/zookeeper:latest'
+    environment: 
+      ALLOW_ANONYMOUS_LOGIN: 'yes'
     ports:
       - '2181:2181'
     volumes:
-      - /path/to/zookeeper-persistence:/bitnami/zookeeper
+      - ../zookeeper/data:/bitnami/zookeeper
 
   traefik:
     image: traefik:1.7

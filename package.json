@@ -1,6 +1,9 @@
 {
   "name": "analytics-service",
   "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/rishighan/analytics-service"
+  },
   "description": "My Moleculer microservices project",
   "scripts": {
     "dev": "moleculer-runner --repl --hot services",
