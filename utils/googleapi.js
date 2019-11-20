@@ -1,6 +1,21 @@
 const { google } = require("googleapis");
 const _ = require("lodash");
 const redis = require("../config/redis.config");
+const ZooKeeper = require("zookeeper").Promise;
+
+function createClient(timeoutMs = 5000) {
+	const config = {
+		connect: process.env.ZOOKEEPER_HOST,
+		timeout: timeoutMs,
+		debug_level: ZooKeeper.ZOO_LOG_LEVEL_WARN,
+		host_order_deterministic: false,
+	};
+
+	return new ZooKeeper(config);
+}
+
+const client = createClient();
+console.log("ZOOKEEPER HOST-> ", client);
 
 let jwtClient;
 redis.client.hgetall("googleapi", (error, data) => {

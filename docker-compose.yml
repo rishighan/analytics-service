@@ -66,6 +66,8 @@ services:
       - '2181:2181'
     volumes:
       - ../zookeeper/data:/bitnami/zookeeper
+    networks:
+      - internal
 
   traefik:
     image: traefik:1.7
