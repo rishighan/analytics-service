@@ -1,56 +1,64 @@
 const { google } = require("googleapis");
 const _ = require("lodash");
-const redis = require("../config/redis.config");
 const zookeeper = require("node-zookeeper-client");
 
 const client = zookeeper.createClient(process.env.ZOOKEEPER_HOST);
-const path = process.argv[2];
+let analyticsQuery;
+let jwtClient;
 
-listChildren = (client, path) => {
-  client.getChildren(
-    path,
-    event => {
-      console.log("Got watcher event: %s", event);
-      listChildren(client, path);
-    },
-    (error, children, stat) => {
-      if (error) {
-        console.log("Failed to list children of %s due to: %s.", path, error);
-        return;
-      }
-
-      console.log("Children of %s are: %j.", path, children);
-    }
-  );
+const getNodeData = (path, client) => {
+	return new Promise((resolve, reject) => {
+		client.getData(
+			path,
+			(event) => {
+				console.log("Got event: %s.", event);
+			},
+			(error, data, stat) => {
+				if (error) {
+					console.log(error.stack);
+					reject(error);
+				}
+				resolve(data.toString("utf8"));
+				// console.log('Got data: %s', data.toString('utf8'));
+			}
+		);
+	});
 };
 
-client.once("connected", function() {
-  console.log("Connected to ZooKeeper.");
-  listChildren(client, path);
+const getCredentials = () => {
+	const client_email = getNodeData("/googleapi/client_email", client);
+	const private_key = getNodeData("/googleapi/private_key", client);
+	return Promise.all([client_email, private_key])
+		.then((data, error) => {
+			if (error) {
+				console.log(error);
+			}
+			const privateKey = _.replace(data[1], /\\n/g, "\n");
+			return new google.auth.JWT(
+				data[0],
+				null,
+				privateKey,
+				"https://www.googleapis.com/auth/analytics.readonly"
+			);
+		});
+};
+
+client.once("connected", () => {
+	console.log("Connected to the Zookeeper server.");
 });
 
 client.connect();
-
-let jwtClient;
-redis.client.hgetall("googleapi", (error, data) => {
-  const privateKey = _.replace(data.private_key, /\\n/g, "\n");
-  jwtClient = new google.auth.JWT(
-    data.client_email,
-    null,
-    privateKey,
-    "https://www.googleapis.com/auth/analytics.readonly"
-  );
-});
-
-const analyticsQuery = async queryString => {
-  const parsedQueryJSON = JSON.parse(queryString);
-  const authResponse = await jwtClient.authorize();
-  const queryConfig = _.extend({ auth: jwtClient }, parsedQueryJSON);
-  const analyticsData = await google.analytics("v3").data.ga.get(queryConfig);
-  return analyticsData;
+analyticsQuery = async queryString => {
+	jwtClient = await getCredentials();
+	const parsedQueryJSON = JSON.parse(queryString);
+	const authResponse = await jwtClient.authorize();
+	const queryConfig = _.extend({ auth: jwtClient }, parsedQueryJSON);
+	const analyticsData = await google.analytics("v3").data.ga.get(queryConfig);
+	return analyticsData;
 };
 
+
 module.exports = {
-  jwtClient,
-  analyticsQuery
+	jwtClient,
+	analyticsQuery
 };
