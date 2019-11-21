@@ -33,8 +33,8 @@
     "moleculer": "^0.13.9",
     "moleculer-web": "^0.9.0-beta6",
     "nats": "^1.3.0",
-    "redis": "^2.8.0",
-    "zookeeper": "^4.5.0"
+    "node-zookeeper-client": "^1.1.0",
+    "redis": "^2.8.0"
   },
   "engines": {
     "node": ">= 8.x.x"
