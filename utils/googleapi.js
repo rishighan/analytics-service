@@ -25,22 +25,12 @@ const getNodeData = (path, client) => {
 	});
 };
 
-const getCredentials = () => {
+const getCredentials = async () => {
 	const client_email = getNodeData("/googleapi/client_email", client);
 	const private_key = getNodeData("/googleapi/private_key", client);
-	return Promise.all([client_email, private_key])
-		.then((data, error) => {
-			if (error) {
-				console.log(error);
-			}
-			const privateKey = _.replace(data[1], /\\n/g, "\n");
-			return new google.auth.JWT(
-				data[0],
-				null,
-				privateKey,
-				"https://www.googleapis.com/auth/analytics.readonly"
-			);
-		});
+	const data = await Promise.all([client_email, private_key]);
+	const privateKey = _.replace(data[1], /\\n/g, "\n");
+	return new google.auth.JWT(data[0], null, privateKey, "https://www.googleapis.com/auth/analytics.readonly");
 };
 
 client.once("connected", () => {
@@ -48,6 +38,7 @@ client.once("connected", () => {
 });
 
 client.connect();
+
 analyticsQuery = async queryString => {
 	jwtClient = await getCredentials();
 	const parsedQueryJSON = JSON.parse(queryString);
