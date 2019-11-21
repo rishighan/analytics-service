@@ -13,6 +13,7 @@ services:
       PORT: 3000
     depends_on:
       - nats
+      - zookeeper
     labels:
       - "traefik.enable=true"
       - "traefik.backend=api"
@@ -34,7 +35,7 @@ services:
       - "traefik.enable=false"
     depends_on:
       - nats
-      - redis
+      - zookeeper
     networks:
       - internal
 
@@ -45,18 +46,6 @@ services:
       - "traefik.enable=false"
     networks:
       - internal
-
-  redis:
-    container_name: cache
-    image: redis
-    networks:
-      - internal
-    ports:
-      - "6379:6379"
-    volumes:
-      - ../redis/data:/data
-    entrypoint: redis-server --appendonly yes  
-    restart: always
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
