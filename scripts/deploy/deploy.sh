@@ -62,9 +62,10 @@ fi
     docker system prune -f
 
     printf "$DOWNLOAD Downloading the docker-compose configuration for Analytics Service...\n\n"
-    curl "$repository_base_url"/master/Dockerfile --output Dockerfile
-    curl "$repository_base_url"/master/docker-compose.yml --output docker-compose.yml
-    curl "$repository_base_url"/master/docker-compose.env --output docker-compose.env
+    printf "$repository_base_url\n\n"
+    curl "$repository_base_url"/Dockerfile --output Dockerfile
+    curl "$repository_base_url"/docker-compose.yml --output docker-compose.yml
+    curl "$repository_base_url"/docker-compose.env --output docker-compose.env
     
     printf "\n$BROOM Stopping and removing containers and volumes...\n\n"
     docker-compose down -v
