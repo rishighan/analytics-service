@@ -2,10 +2,10 @@
 # Rishi Ghan
 # Deployment script for a microservice
 
-# usage: ./deploy.sh -d [configuration directory]
-#                    -s [service name]
+# usage: ./deploy.sh -s [service name]
 #                    -h [hostname]
 #                    -u [username]
+#                    -r [repository base url to the raw text content]
 
 # Emojis
 CLIPBOARD="📋"
@@ -24,7 +24,6 @@ StrictHostKeyChecking no
 EOF
 
 # params
-directory_name=''
 service_name=''
 hostname=''
 username=''
@@ -54,7 +53,7 @@ else
     mkdir "$service_name"
     printf "$CHECKMARK Done.\n"
 fi
-    printf "\n$CLIPBOARD Changing directory to $directory_name...\n"
+    printf "\n$CLIPBOARD Changing directory to $service_name...\n"
     cd "$service_name"
 
     printf "\n$SCISSORS  Pruning Docker images, networks and volumes...\n\n"
