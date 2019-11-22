@@ -49,6 +49,7 @@ services:
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
+    container_name: zookeeper
     environment: 
       ALLOW_ANONYMOUS_LOGIN: 'yes'
     ports:

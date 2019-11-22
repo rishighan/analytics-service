@@ -29,12 +29,13 @@ service_name=''
 hostname=''
 username=''
 
-while getopts 'd:s:h:u:' flag; do
+while getopts 'd:s:h:u:r:' flag; do
     case "${flag}" in
         d) directory_name="${OPTARG}" ;;
         s) service_name="${OPTARG}" ;;
         h) hostname="${OPTARG}" ;;
         u) username="${OPTARG}" ;;
+        r) repository_base_url="${OPTARG}" ;;
         *) printf "Usage..."
            exit 1 ;;
     esac
@@ -61,9 +62,9 @@ fi
     docker system prune -f
 
     printf "$DOWNLOAD Downloading the docker-compose configuration for Analytics Service...\n\n"
-    curl https://raw.githubusercontent.com/rishighan/analytics-service/master/Dockerfile --output Dockerfile
-    curl https://raw.githubusercontent.com/rishighan/analytics-service/master/docker-compose.yml --output docker-compose.yml
-    curl https://raw.githubusercontent.com/rishighan/analytics-service/master/docker-compose.env --output docker-compose.env
+    curl "$repository_base_url"/master/Dockerfile --output Dockerfile
+    curl "$repository_base_url"/master/docker-compose.yml --output docker-compose.yml
+    curl "$repository_base_url"/master/docker-compose.env --output docker-compose.env
     
     printf "\n$BROOM Stopping and removing containers and volumes...\n\n"
     docker-compose down -v
