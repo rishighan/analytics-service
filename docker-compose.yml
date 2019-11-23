@@ -20,7 +20,7 @@ services:
       - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=PathPrefix:/"
     networks:
-      - internal
+      - rgnetwork
 
   greeter:
     build:
@@ -36,7 +36,7 @@ services:
       - nats
       - zookeeper
     networks:
-      - internal
+      - rgnetwork
 
   nats:
     image: nats
@@ -44,7 +44,7 @@ services:
     labels:
       - "traefik.enable=false"
     networks:
-      - internal
+      - rgnetwork
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
@@ -56,7 +56,7 @@ services:
     volumes:
       - ../zookeeper/data:/bitnami/zookeeper
     networks:
-      - internal
+      - rgnetwork
 
   traefik:
     image: traefik:1.7
@@ -76,8 +76,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
     networks:
-      - internal
+      - rgnetwork
       - default
 
 networks:
-  internal:
+  rgnetwork:
+    driver: bridge
