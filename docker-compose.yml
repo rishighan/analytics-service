@@ -7,6 +7,8 @@ services:
     image: frishi/analytics-service-api
     container_name: analytics-service-api
     env_file: docker-compose.env
+    command:
+      - --port=3000
     environment:
       SERVICES: api
       PORT: 3000
@@ -14,11 +16,12 @@ services:
       - nats
       - zookeeper
     labels:
-      - "traefik.enable=true"
-      - "traefik.backend=api"
-      - "traefik.port=3000"
-      - "traefik.frontend.entryPoints=http"
-      - "traefik.frontend.rule=PathPrefix:/"
+      # - "traefik.enable=true"
+      # - "traefik.backend=api"
+      # - "traefik.port=3000"
+      # - "traefik.frontend.entryPoints=http"
+      # - "traefik.frontend.rule=PathPrefix:/"
+      - "traefik.http.services.api.loadbalancer.server.port=3000"
     networks:
       - rgnetwork
 
@@ -59,22 +62,27 @@ services:
       - rgnetwork
 
   traefik:
-    image: traefik:1.7
+    image: traefik:v2.0.1
     container_name: traefik
+    restart: unless-stopped
     command:
-      - "--api"
-      - "--docker"
-      - "--docker.watch"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=traefik"
-      - "traefik.port=8080"
+      # - "--api"
+      # - "--docker"
+      # - "--docker.watch"
+      - --entrypoints.web.address=:80
+      - --providers.docker=true
+      - --api.insecure
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.backend=traefik"
+    #   - "traefik.port=8080"
     ports:
-      - 3000:80
-      - 3001:8080
+      - "80:80"
+      - "3000:3000"
+      - "8080:8080"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - /dev/null:/traefik.toml
     networks:
       - rgnetwork
       - default
