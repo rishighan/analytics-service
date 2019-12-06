@@ -21,11 +21,11 @@ services:
     networks:
       - rgnetwork
 
-  greeter:
+  analytics-service:
     build:
       context: .
-    image: frishi/analytics-service-greeter
-    container_name: analytics-service-greeter
+    image: frishi/analytics-service
+    container_name: analytics-service
     env_file: docker-compose.env
     environment:
       SERVICES: analytics
@@ -69,7 +69,7 @@ services:
       - --api.insecure=true
       - --providers.docker.exposedbydefault=false
     labels:
-      - traefik.docker.network=rgnetwor
+      - traefik.docker.network=rgnetwork
     ports:
       - "80:80"
       - "8080:8080"
