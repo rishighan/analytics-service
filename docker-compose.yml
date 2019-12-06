@@ -7,8 +7,6 @@ services:
     image: frishi/analytics-service-api
     container_name: analytics-service-api
     env_file: docker-compose.env
-    command:
-      - --port=3000
     environment:
       SERVICES: api
       PORT: 3000
@@ -16,12 +14,10 @@ services:
       - nats
       - zookeeper
     labels:
-      # - "traefik.enable=true"
-      # - "traefik.backend=api"
-      # - "traefik.port=3000"
-      # - "traefik.frontend.entryPoints=http"
-      # - "traefik.frontend.rule=PathPrefix:/"
-      - "traefik.http.services.api.loadbalancer.server.port=3000"
+      - traefik.http.services.api.loadbalancer.server.port=3000
+      - traefik.enable=true
+      - traefik.docker.network=rgnetwork
+      - traefik.http.routers.testapp.rule=Host(`services.rishighan.com`) && PathPrefix(`/`)
     networks:
       - rgnetwork
 
@@ -34,7 +30,7 @@ services:
     environment:
       SERVICES: analytics
     labels:
-      - "traefik.enable=false"
+      - traefik.enable=false
     depends_on:
       - nats
       - zookeeper
@@ -45,7 +41,7 @@ services:
     image: nats
     container_name: nats
     labels:
-      - "traefik.enable=false"
+      - traefik.enable=false
     networks:
       - rgnetwork
 
@@ -54,6 +50,8 @@ services:
     container_name: zookeeper
     environment: 
       ALLOW_ANONYMOUS_LOGIN: 'yes'
+    labels:
+      - traefik.enable=false
     ports:
       - '2181:2181'
     volumes:
@@ -66,19 +64,14 @@ services:
     container_name: traefik
     restart: unless-stopped
     command:
-      # - "--api"
-      # - "--docker"
-      # - "--docker.watch"
       - --entrypoints.web.address=:80
       - --providers.docker=true
-      - --api.insecure
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.backend=traefik"
-    #   - "traefik.port=8080"
+      - --api.insecure=true
+      - --providers.docker.exposedbydefault=false
+    labels:
+      - traefik.docker.network=rgnetwor
     ports:
       - "80:80"
-      - "3000:3000"
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
