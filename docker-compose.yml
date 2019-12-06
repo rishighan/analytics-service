@@ -1,7 +1,7 @@
 version: "3.2"
 
 services:
-  api:
+  analytics-api:
     build:
       context: .
     image: frishi/analytics-service-api
@@ -14,10 +14,10 @@ services:
       - nats
       - zookeeper
     labels:
-      - traefik.http.services.api.loadbalancer.server.port=3000
+      - traefik.http.services.analytics-api.loadbalancer.server.port=3000
       - traefik.enable=true
       - traefik.docker.network=rgnetwork
-      - traefik.http.routers.testapp.rule=Host(`services.rishighan.com`) && PathPrefix(`/`)
+      - traefik.http.routers.analytics-api.rule=Host(`services.rishighan.com`) && PathPrefix(`/`)
     networks:
       - rgnetwork
 
