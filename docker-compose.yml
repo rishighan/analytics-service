@@ -78,7 +78,6 @@ services:
       # - /dev/null:/traefik.toml
     networks:
       - rgnetwork
-      - default
 
 networks:
   rgnetwork:
