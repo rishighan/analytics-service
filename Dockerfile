@@ -12,4 +12,5 @@ COPY . .
 
 RUN adduser -D myuser
 USER myuser
+EXPOSE 3000
 CMD ["npm", "start"]
