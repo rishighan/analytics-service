@@ -21,8 +21,6 @@ services:
       - traefik.http.routers.analytics-api.service=analytics-api@docker
       - traefik.http.routers.analytics-api.rule=Host(`services.rishighan.com`) && PathPrefix(`/api/analytics/`)
       - traefik.http.routers.analytics-api.tls=true
-      - traefik.http.middlewares.https_redirect.redirectscheme.scheme=https
-      - traefik.http.routers.analytics-api.middlewares=https_redirect
       - traefik.http.routers.analytics-api.tls.certresolver=le
     networks:
       - gateway
