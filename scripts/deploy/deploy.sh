@@ -59,7 +59,7 @@ fi
     printf "\n$SCISSORS  Pruning Docker images, networks and volumes...\n\n"
     docker system prune -f
 
-    printf "$DOWNLOAD Downloading the docker-compose configuration for Analytics Service...\n\n"
+    printf "$DOWNLOAD Downloading the docker-compose configuration for $service_name ...\n\n"
     printf "$repository_base_url\n\n"
     curl "$repository_base_url"/Dockerfile --output Dockerfile
     curl "$repository_base_url"/docker-compose.yml --output docker-compose.yml
