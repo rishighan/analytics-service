@@ -17,7 +17,7 @@ services:
       - traefik.http.services.analytics-api.loadbalancer.server.port=9876
       - traefik.enable=true
       - traefik.docker.network=gateway
-      - traefik.http.routers.analytics-api.entrypoints=websecure
+      # - traefik.http.routers.analytics-api.entrypoints=websecure
       - traefik.http.routers.analytics-api.service=analytics-api@docker
       - traefik.http.routers.analytics-api.rule=Host(`services.rishighan.com`) && PathPrefix(`/api/analytics/`)
       # - traefik.http.routers.analytics-api.tls=true
