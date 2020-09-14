@@ -8,6 +8,14 @@ module.exports = {
 	// More info about settings: https://moleculer.services/docs/0.13/moleculer-web.html
 	settings: {
 		port: process.env.PORT || 9876,
+		cors: {
+			origin: "*",
+			methods: ["GET", "OPTIONS", "POST", "PUT", "DELETE"],
+			allowedHeaders: "*",
+			exposedHeaders: [],
+			credentials: false,
+			maxAge: 3600
+		},
 		routes: [{
 			path: "/api",
 			whitelist: [
